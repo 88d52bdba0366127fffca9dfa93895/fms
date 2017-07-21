@@ -32,18 +32,20 @@ world:
 
 engines:
     - classname: AsynchronousDeterministic
-      daylength: 200
-      days: 300
+      #Make sure day length is equal to the number of traders to ensure all get called
+      daylength: 250
+      days: 200
       market:
           classname: HighestQtyFixing
 
 agents:
-    - classname: AgendaTrader
-      number: 200
+    - classname: FollowTrader
+      number: 50
       money: 100000
       stocks: 1000
       # args are :
       # - avgprice : average order price (float)
       # - maxfluct : maximum % fluctuation around price (int)
       # - maxbuy : maximum quantity to buy (int)
-      args: [100, 5, 100]
+      args: [100, 50, 100]
+    

@@ -11,12 +11,13 @@ from fms import agents
 from fms.utils import BUY, SELL
 from fms.utils.exceptions import MissingParameter
 
-logger = logging.getLogger('fms.agents.agendatrader')
+logger = logging.getLogger('fms.agents.followtrader')
 
-class AgendaTrader(agents.Agent):
+class FollowTrader(agents.Agent):
     """
-    Simulate an agent whose pricing can develop over time
+    Simulate an agent pricing the security the same as the last market price
     See RandomTrader for further documentation of errors and exceptions raised
+
     """
     
     def __init__(self, params, offset=0):
@@ -43,8 +44,9 @@ class AgendaTrader(agents.Agent):
             direction = random.choice((BUY, SELL))
         else:
             direction = BUY
-        if self.avgprice == 0:
+        if True:
             try:
+                #Just follow the last price in own pricing
                 self.avgprice = market.lastprice
             except AttributeError:
                 self.avgprice = 100
@@ -52,8 +54,6 @@ class AgendaTrader(agents.Agent):
         price = random.uniform(self.avgprice*(100-self.maxfluct), 
                 self.avgprice*(100+self.maxfluct))/100.
         
-        #Hike prices
-        self.avgprice += 1
         
         if direction:
             maxq = self.stocks

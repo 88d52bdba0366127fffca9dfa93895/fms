@@ -31,7 +31,11 @@ class AsynchronousDeterministic(Engine):
         Deterministically select agents one by one and let them speak on market.   
         As market is asynchronous, as soon as an agent speaks, do_clearing
         is called to execute any possible transaction immediately.
+        This market also pays out dividends accoarding to a dividend schedule.
+        In a fixed interval, each agent recieves a dividend depending on the amount of stocks owned.
         """
+        #rate at which dividends are paid
+        dividend_schedule = 2
         market.sellbook = world.state()['sellbook']
         logger.debug("Starting with sellbook %s" % market.sellbook)
         market.buybook = world.state()['buybook']
@@ -69,9 +73,18 @@ class AsynchronousDeterministic(Engine):
             #At the end of the day clear the books        
             if self.clearbooksateod:
                 market.clear_books()
+            if day % dividend_schedule == 0:
+                #and pay dividends to each agent accoarding to the amount of shares they own
+                for agent in agents:
+                    dividend = self._compute_dividend(agent.stocks)
+                    agent.money += dividend
         #Log the final books
         logger.debug("Ending with sellbook %s" % market.sellbook)
         logger.debug("Ending with buybook %s" % market.buybook)
+        
+    def _compute_dividend(self,shares):
+        dividend_per_share = 20
+        return shares * dividend_per_share
 
 if __name__ == '__main__':
     print AsynchronousRandWReplace()
