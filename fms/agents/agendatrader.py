@@ -6,6 +6,7 @@ Module defining RandomTrader agent class.
 
 import random
 import logging
+import math
 
 from fms import agents
 from fms.utils import BUY, SELL
@@ -53,7 +54,7 @@ class AgendaTrader(agents.Agent):
                 self.avgprice*(100+self.maxfluct))/100.
         
         #Hike prices
-        self.avgprice += 1
+        self.avgprice = math.sin(world.tick / 2000) * 80 + 100
         
         if direction:
             maxq = self.stocks

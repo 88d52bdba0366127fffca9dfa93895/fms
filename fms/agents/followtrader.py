@@ -19,7 +19,6 @@ class FollowTrader(agents.Agent):
     See RandomTrader for further documentation of errors and exceptions raised
 
     """
-    
     def __init__(self, params, offset=0):
         agents.Agent.__init__(self, params, offset)
         try:
@@ -44,13 +43,15 @@ class FollowTrader(agents.Agent):
             direction = random.choice((BUY, SELL))
         else:
             direction = BUY
-        if True:
-            try:
+        
+        try:
+            if market.lastprice != None:    
                 #Just follow the last price in own pricing
-                self.avgprice = market.lastprice
-            except AttributeError:
-                self.avgprice = 100
-                logger.warning("No market, no avgprice, avgprice set to 100")
+                self.avgprice = (market.lastprice + self.avgprice) / 2
+        except AttributeError:
+            self.avgprice = 100
+            print('failed to get market price')
+            logger.warning("No market, no avgprice, avgprice set to 100")
         price = random.uniform(self.avgprice*(100-self.maxfluct), 
                 self.avgprice*(100+self.maxfluct))/100.
         

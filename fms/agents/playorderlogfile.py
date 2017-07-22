@@ -45,7 +45,7 @@ class PlayOrderLogFile(agents.Agent):
     def reset(self):
         del self.__dict__['logfile']
 
-    def act(self):
+    def act(self, world=None, market=None):
         """
         Return order as a dict with keys in (direction, price, quantity).
 

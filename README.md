@@ -1,14 +1,12 @@
-==============================================
-FMS, An agent-based Financial Market Simulator
-==============================================
+# FMS, An agent-based Financial Market Simulator
+
 
 FMS is (c) 2008-2012 Jean-Charles Bagneris. See LICENSE for redistribution
 information and usual disclaimer.
 
 Thanks for downloading FMS !
 
-What is FMS ?
-=============
+## What is FMS ?
 
 FMS is an agent-based financial market simulator. The intended audience is
 financial markets researchers and experimentators, looking to simulate various
@@ -30,8 +28,7 @@ If you program your own classes, remember these may be of interest for others:
 feel free to drop me an email and to contribute (see `How could I contribute ?`_
 below).
 
-What FMS is not
-===============
+## What FMS is not
 
 FMS is a simulation tool intended for research only. Thus, FMS is NOT (and will
 not be in the foreseeable future):
@@ -46,8 +43,7 @@ not be in the foreseeable future):
 .. [1] Although FMS intention is not primarily pedagogical, it *might* be useful 
     in classroom environment with PhD students, for an example.
 
-Rationale and history
-=====================
+## Rationale and history
 
 FMS was primarily developed for my own research projects. The idea came from many
 other agent based simulation programs, but the design was especially inspired by
@@ -66,13 +62,12 @@ programming.
 
 .. _Python: http://www.python.org/
 
-Install or uninstall FMS
-========================
+## Install or uninstall FMS
+
 
 See INSTALL file.
 
-Quick start
-===========
+## Quick start
 
 To use FMS, you first need to install it on your system (obviously). Follow the
 INSTALL file instruction, and do not forget to run the tests once you are done.
@@ -84,16 +79,16 @@ their required parameters: world, engines/markets, agents.
 
 .. _YAML: http://www.yaml.org/
 
-World
------
+### World
+
 
 This is a "global environment" class, providing agents with so called exogenous
 information on request. Such information might typically be the level of
 interest rates, or energy price, for an example. A NullWorld class is provided
 with FMS, it does not provide any special information.
 
-Engines/markets
----------------
+### Engines/markets
+
 
 The engines/markets tuples describe what you would simply call "the market" in
 the real world. Engines are the "traffic controlers" : they give speak to the
@@ -106,16 +101,15 @@ doing the clearing (for an example, auction style "fixing" clearing once in a
 while, or continuous book based clearing). FMS provides with two basic market
 classes, ContinuousOrderDriven and HighestQtyFixing.
 
-Agents
-------
+### Agents
+
 
 Agents act when the engines give them speak. Acting is either do nothing, or
 place an order. Order should at least have a direction (buy or sell) but may in
 addition specify price and/or quantity. A ZeroIntelligenceTrader class is
 provided: this agent takes fully random decisions.
 
-Putting it all together
------------------------
+### Putting it all together
 
 Once you have chosen or written your world, engines/markets and agents classes,
 you describe those and their parameters in the experiment configuration file.
@@ -139,8 +133,8 @@ This will really run the experiment, outputting transaction data either on the
 console or in a comma separated value file, depending on your configuration
 file.
 
-What now ?
-==========
+## What now ?
+
 
 If you read all this, then you certainly have a good reason to use FMS. If the
 world, engines, markets and agent classes included in FMS do not meet your
@@ -150,8 +144,7 @@ this, and the resulting classes would be part of FMS next release. By the way,
 if you write yourself an interesting class for FMS, please submit it for
 inclusion (you would of course be credited for your work).
 
-How could I contribute ?
-========================
+## How could I contribute ?
 
 Report bugs, write new classes, translate documentation, write documentation and
 additional example, request new features, watch or fork `the project`_, use FMS and

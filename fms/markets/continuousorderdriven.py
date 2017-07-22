@@ -233,13 +233,9 @@ class ContinuousOrderDriven(markets.Market):
         Adds :
         - lastprice (float) : last transaction price, see info()
         - transaction (int) : transaction counter
-        - price_hist (list) : list of last 100 executed prices 
-        - rolling_average_price (flot) : rolling average of price 
         """
         markets.Market.__init__(self, parameters)
         self.lastprice = None
-        self.price_hist = list()
-        self.rolling_average_price = None
         self.transaction = 0
 
     def is_valid(self, agent, order):
@@ -256,7 +252,6 @@ class ContinuousOrderDriven(markets.Market):
         - buylimit (float): best buy limit
         - lastprice (float): last transaction price
         - lasttransaction (int): # of last transaction
-        - rolling_average_price (float) : rolling price average
         """
         if self.sellbook:
             sellbook = self.sellbook
@@ -269,8 +264,7 @@ class ContinuousOrderDriven(markets.Market):
         infodict = {'sellbook': sellbook,
                     'buybook': buybook,
                     'lastprice': self.lastprice,
-                    'lasttransaction': self.transaction,
-                    'rolling_average_price': self.rolling_average_price}
+                    'lasttransaction': self.transaction}
         return infodict
 
     def do_clearing(self, time):
@@ -286,12 +280,6 @@ class ContinuousOrderDriven(markets.Market):
                 else:
                     executedprice = self.buybook[-1][0]
                 self.lastprice = executedprice
-                #Add last price to history
-                self.price_hist.append(self.lastprice)
-                #Shorten history if nessecary
-                if len(self.price_hist) > 100:
-                    self.price_hist.pop(0)
-                self.rolling_average_price = np.average(self.price_hist)
                 #Increment transaction counter
                 self.transaction += 1
                 #Get buyer and seller

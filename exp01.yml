@@ -31,7 +31,7 @@ world:
       classname: NullWorld
 
 engines:
-    - classname: AsynchronousDeterministic
+    - classname: SynchronousRandWReplace
       #Make sure day length is equal to the number of traders to ensure all get called
       daylength: 250
       days: 200
@@ -39,13 +39,13 @@ engines:
           classname: HighestQtyFixing
 
 agents:
-    - classname: FollowTrader
-      number: 50
+    - classname: AgendaTrader
+      number: 200
       money: 100000
       stocks: 1000
       # args are :
       # - avgprice : average order price (float)
       # - maxfluct : maximum % fluctuation around price (int)
       # - maxbuy : maximum quantity to buy (int)
-      args: [100, 50, 100]
-    
+      args: [100, 10, 100]
+

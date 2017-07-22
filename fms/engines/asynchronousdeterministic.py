@@ -49,7 +49,7 @@ class AsynchronousDeterministic(Engine):
                 n_agents = len(agents)
                 agt = time % n_agents
                 #Get the order from the agent
-                order = market.sanitize_order(agents[agt].speak())
+                order = market.sanitize_order(agents[agt].speak(world = world, market = market))
                 #Execute the order
                 if market.is_valid(agents[agt], order):
                     #If logging is activated, log the order
