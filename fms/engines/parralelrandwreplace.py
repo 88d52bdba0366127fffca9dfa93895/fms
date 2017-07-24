@@ -23,8 +23,8 @@ See: http://qingkaikong.blogspot.de/2016/12/python-parallel-method-in-class.html
 def get_order(agent,world,market):
     order = market.sanitize_order(agent.speak(world = world, market = market))
     if market.is_valid(agent, order):
-        return order
-    return None 
+        return order, agent
+    return None, agent
 
 class ParralelRandWReplace(Engine):
     """
@@ -56,14 +56,17 @@ class ParralelRandWReplace(Engine):
         
         #Loop over days
         for day in range(self.days):
-            #Sample a subset of the agents
-            sample = np.random.choice(agents,size=self.daylength)
+
             #We want as many threads as there are cpus
             cpu_count = multiprocessing.cpu_count()
             #get the orders for all agents, in parallel
-            orders = Parallel(n_jobs=cpu_count)(delayed(get_order)(agent,world,market) for agent in sample)
+            r = Parallel(n_jobs=cpu_count)(delayed(get_order)(agent,world,market) for agent in agents)
+            orders, updated_agents = zip(*r)
+            agents = updated_agents
+            #Sample a subset of the agents
+            sample = np.random.choice(orders,size=self.daylength)
             #Now we loop over orders and execute them one by one
-            for order in orders:
+            for order in sample:
                 #Check whether there actually is an order to execute
                 if order != None:
                     #Optional logging
