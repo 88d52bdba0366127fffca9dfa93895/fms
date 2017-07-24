@@ -31,12 +31,12 @@ world:
       classname: NullWorld
 
 engines:
-    - classname: SynchronousRandWReplace
+    - classname: ParralelRandWReplace
       #Make sure day length is equal to the number of traders to ensure all get called
       daylength: 250
       days: 200
       market:
-          classname: HighestQtyFixing
+          classname: ContinuousOrderDriven
 
 agents:
     - classname: AgendaTrader
@@ -48,4 +48,13 @@ agents:
       # - maxfluct : maximum % fluctuation around price (int)
       # - maxbuy : maximum quantity to buy (int)
       args: [100, 10, 100]
+    - classname: ZeroIntelligenceTrader
+      number: 0
+      money: 100000
+      stocks: 1000
+      # args are :
+      # - avgprice : average order price (float)
+      # - maxfluct : maximum % fluctuation around price (int)
+      # - maxbuy : maximum quantity to buy (int)
+      args: [200, 100]
 

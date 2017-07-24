@@ -54,7 +54,7 @@ class AgendaTrader(agents.Agent):
                 self.avgprice*(100+self.maxfluct))/100.
         
         #Hike prices
-        self.avgprice = math.sin(world.tick / 2000) * 80 + 100
+        self.avgprice += 1 #math.sin(world.tick / 2000) * 80 + 100
         
         if direction:
             maxq = self.stocks
