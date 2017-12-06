@@ -4,16 +4,18 @@
 Agents module.
 """
 
+from fms.utils import BUY, SELL
 from fms.utils.exceptions import MissingParameter, NotAnInteger
+
 
 class Agent:
     """
     Abstract agent class.
-    
+
     Any agent class inherits from agents.Agent, and should provide
     - a money attribute (float)
     - a stocks attribute (int)
-    These attributes are passed in the parameters dict on instance 
+    These attributes are passed in the parameters dict on instance
     creation.
 
     Agent (sub)classes should provide an act() method,
@@ -22,7 +24,7 @@ class Agent:
     - (direction, price) : price is a .2 float
     - (direction, price, quantity) : quantity is an int
 
-    Agent class provides a record(direction,price,quantity) 
+    Agent class provides a record(direction,price,quantity)
     method, returning nothing, and updating money and stocks
     of agent given the operation to record.
     """
@@ -43,18 +45,18 @@ class Agent:
         return "<Agent %s>" % id(self)
 
     def state(self):
-        return "Agent %s - owns $%8.2f and %6i securities" % (id(self), 
+        return "Agent %s - owns $%8.2f and %6i securities" % (id(self),
                 self.money, self.stocks)
 
-    def speak(self):
+    def speak(self, world=None, market=None):
         """
         Return order emitted by agent
         """
-        order = self.act()
+        order = self.act(world=world, market=market)
         order['agent'] = order.get('agent', self)
         return order
 
-    def act(self):
+    def act(self, world=None, market=None):
         """
         Emit an order on the market.
         Return order as dict, with following keys:
@@ -72,10 +74,10 @@ class Agent:
         """
         Record transaction
         """
-        if direction:
+        if direction is SELL:
             self.stocks -= quantity
-            self.money += quantity*price
+            self.money += quantity * price * (1 - 0.25 / 100)
         else:
             self.stocks += quantity
-            self.money -= quantity*price
+            self.money -= quantity * price * (1 + 0.15 / 100)
 

@@ -5,8 +5,10 @@ Order driven market, continuous transactions.
 Any order is considered valid.
 """
 
+import numpy as np
 from fms import markets
 from fms.utils import BUY, SELL
+
 
 class ContinuousOrderDriven(markets.Market):
     """
@@ -45,7 +47,7 @@ class ContinuousOrderDriven(markets.Market):
     The heart of the market is the recording and/or execution of
     agents orders. We suppose agentbob is buyer and agentsmith is
     seller.
-    Each call to record_order increments the self.time value, 
+    Each call to record_order increments the self.time value,
     and orders are recorded in the books with a timestamp.
     >>> from fms.utils import BUY, SELL
     >>> market.record_order({'agent': agentbob, 'direction':BUY, 'price':2.50, 'quantity':10}, 0, False)
@@ -237,12 +239,14 @@ class ContinuousOrderDriven(markets.Market):
         markets.Market.__init__(self, parameters)
         self.lastprice = None
         self.transaction = 0
+        self.last_return = 0
+        self.exec_prices = np.array([parameters['engines'][0]['ref_price']])
 
     def is_valid(self, agent, order):
         """
         Checks if order is valid. Always True for this market.
         """
-        return True
+        return True if order['quantity'] != 0 else False
 
     def info(self):
         """
@@ -279,6 +283,11 @@ class ContinuousOrderDriven(markets.Market):
                     executedprice = self.sellbook[0][0]
                 else:
                     executedprice = self.buybook[-1][0]
+                #
+                if self.lastprice is not None:
+                    self.last_return = float(executedprice) / self.lastprice - 1
+                #
+                self.exec_prices = np.append(self.exec_prices, executedprice)
                 self.lastprice = executedprice
                 self.transaction += 1
                 buyer = self.buybook[-1][3]
@@ -303,6 +312,7 @@ def _test():
     """
     import doctest
     doctest.testmod(optionflags=+doctest.ELLIPSIS)
+
 
 if __name__ == '__main__':
     _test()

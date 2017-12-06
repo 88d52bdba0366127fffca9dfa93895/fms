@@ -1,0 +1,45 @@
+--- # Capstone project
+randomseed: 0
+outputfilename: output.csv
+orderslogfilename: log.log
+
+world:
+      classname: qcf2016.VNWorld
+
+engines:
+    - classname: AsynchronousRandWReplace
+      # daylength: 5000
+      daylength: 10000
+      unique_by_agent: True
+      ref_price: 100000
+      market:
+          classname: ContinuousOrderDriven
+
+agents:
+    # gaussian distribution
+    - classname: qcf2016.ZeroIntelligenceTrader
+      number: 800
+      money: 100000000
+      stocks: 1000
+      # args are :
+      # - reference price
+      args: [100000]
+    # fat-tail
+    - classname: qcf2016.HerdingTrader
+      number: 100
+      # number: 100
+      money: 100000000
+      stocks: 1000
+      # args are :
+      # - reference price
+      # - number of traders in cluster
+      args: [100000, 1000]
+    # volatility clustering
+    - classname: qcf2016.ThresholdTrader
+      number: 200
+      money: 100000000
+      stocks: 1000
+      # args are :
+      # - reference price
+      # - number of traders
+      args: [100000, 1000]

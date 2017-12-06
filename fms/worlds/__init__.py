@@ -15,6 +15,7 @@ class World:
         self.lastmarketinfo = {'sellbook':[], 'buybook':[]}
         self.tick = 0
         self.day = 0
+        self.time = 0
 
     def __str__(self):
         return "%s world %s" % (self.__class__, id(self))
@@ -26,8 +27,9 @@ class World:
         day += 1
         time += 1
         print >> sys.stderr, "%04d:%05d%s" % (day, time, "\b"*11),
-        if day*time == max:
+        if day * time == max:
             print >> sys.stderr, "\n"
+        #
 
     def state(self):
         """

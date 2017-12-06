@@ -1,4 +1,4 @@
-# docs/examples/exp01.yml experiment
+# docs/examples/exp02.yml experiment
 time;transaction;price;volume
 4;1;588.35;471
 8;2;981.21;59

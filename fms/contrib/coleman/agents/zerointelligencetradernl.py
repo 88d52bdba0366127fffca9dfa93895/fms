@@ -54,7 +54,7 @@ class ZeroIntelligenceTraderNL(agents.Agent):
       - if direction==SELL, [1,self.stocks]
     Thus, shortselling is not allowed.
     """
-    
+
     def __init__(self, params, offset=0):
         agents.Agent.__init__(self, params, offset)
         try:
@@ -73,7 +73,7 @@ class ZeroIntelligenceTraderNL(agents.Agent):
 
         To avoid short selling as far as possible, if # of stocks
         is zero or negative, force BUY direction.
- 
+
         To avoid levering up as far as possible, if money
         is zero or negative, force SELL.
         """

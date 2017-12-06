@@ -8,6 +8,7 @@ import sys
 from fms.utils import BUY, SELL
 from fms.utils.exceptions import MissingParameter
 
+
 class Market:
     """
     Abstract market class
@@ -21,7 +22,7 @@ class Market:
             if parameters['agents'][0]['classname'] == 'PlayOrderLogFile':
                 self.replay = True
         else:
-            self.outputfile = sys.stdout 
+            self.outputfile = sys.stdout
             self.csvdelimiter = ';'
         self.sellbook = []
         self.buybook = []
@@ -32,8 +33,6 @@ class Market:
     def is_valid(self, agent, desire):
         """
         Checks agent's desire validity
-        
-        Should be implemented in subclass.
         """
         raise NotImplementedError
 
@@ -88,8 +87,6 @@ class Market:
     def do_clearing(self):
         """
         Clears recorded desires
-        
-        Should be implemented in subclass.
         """
         raise NotImplementedError
 
@@ -98,9 +95,11 @@ class Market:
         Returns market current state, as dict
         """
         if self.__class__.__name__ == 'Market':
-            infodict = {'sellbook': [['unset sellbook']],
-                        'buybook': [['unset buybook']],
-                        'lasttransaction':0}
+            infodict = {
+                'sellbook': [['unset sellbook']],
+                'buybook': [['unset buybook']],
+                'lasttransaction': 0
+            }
             return infodict
         else:
             raise NotImplementedError
@@ -118,11 +117,15 @@ class Market:
         if 'direction' in raw_order:
             order['direction'] = raw_order['direction']
             if order['direction'] == BUY:
-                order['price'] = raw_order.get('price', 
-                        self.info()['sellbook'][0][0])
+                order['price'] = raw_order.get(
+                    'price',
+                    self.info()['sellbook'][0][0]
+                )
             else:
-                order['price'] = raw_order.get('price', 
-                        self.info()['buybook'][-1][0])
+                order['price'] = raw_order.get(
+                    'price',
+                    self.info()['buybook'][-1][0]
+                )
             order['quantity'] = raw_order.get('quantity', 1)
             order['agent'] = raw_order['agent']
             return order
@@ -133,12 +136,11 @@ class Market:
         """
         Output a transaction line
         """
-        mask = self.csvdelimiter.join(('%d','%d','%.2f','%d'))
+        mask = self.csvdelimiter.join(('%d', '%d', '%.2f', '%d'))
         print >> self.outputfile, mask % (time,
                                         self.transaction,
-                                        price, 
+                                        price,
                                         quantity)
-
 
     def output_books(self, time):
         """
@@ -156,4 +158,3 @@ class Market:
         print "  Price | Quantity |     Emitter"
         print "          Buy orders at %03d" % time
         print sep
-

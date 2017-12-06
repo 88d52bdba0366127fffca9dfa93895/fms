@@ -4,11 +4,11 @@
 Engine module.
 """
 
+
 class Engine:
     """
     Abstract simulation engine class
     """
-
     def __init__(self, params=None, offset=0):
         if params:
             self.days = params['engines'][offset]['days']
@@ -20,7 +20,7 @@ class Engine:
         else:
             self.days = 1
             self.daylength = 1
-            self.csvdelimiter = ';'
+            self.csvdelimiter = ','
             self.clearbooksateod = True
             self.showbooks = False
             self.unique_by_agent = True
@@ -38,7 +38,7 @@ class Engine:
         - check desire validity (market.is_valid)
         - accumulate desire
         - market.record_order()
-        - call market.do_clearing when needed, in a 
+        - call market.do_clearing when needed, in a
           synchronous or asynchronous way.
         - call market.clear_books() at the end of any day if necessary
         """
@@ -48,6 +48,8 @@ class Engine:
         """
         Output an order in orderlogfile
         """
+        order_str = order.copy()
+        order_str['agent'] = order_str['agent'].__class__.__name__
         mask = self.csvdelimiter.join(('%(direction)s',
             '%(price).2f','%(quantity)d','"%(agent)s"'))
-        print >> self.params.orderslogfile, mask % order
+        print >> self.params.orderslogfile, mask % order_str
