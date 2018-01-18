@@ -30,8 +30,8 @@ class SynchronousRandWReplace(Engine):
 
     def run(self, world, agents, market):
         """
-        Sample agents (with replacement) and let them speak on market.   
-        As market is synchronous, do_clearing is called after 
+        Sample agents (with replacement) and let them speak on market.
+        As market is synchronous, do_clearing is called after
         self.days*self.daylength periods.
         """
         market.sellbook = world.state()['sellbook']
@@ -41,7 +41,7 @@ class SynchronousRandWReplace(Engine):
         for day in range(self.days):
             for time in range(self.daylength):
                 agt = random.randint(0, len(agents)-1)
-                order = market.sanitize_order(agents[agt].speak())
+                order = market.sanitize_order(agents[agt].speak(world = world, market = market))
                 if market.is_valid(agents[agt], order):
                     if self.params.orderslogfile:
                         self.output_order(order)

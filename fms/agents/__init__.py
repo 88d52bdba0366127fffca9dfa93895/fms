@@ -4,9 +4,7 @@
 Agents module.
 """
 
-from fms.utils import BUY, SELL
 from fms.utils.exceptions import MissingParameter, NotAnInteger
-
 
 class Agent:
     """
@@ -48,7 +46,7 @@ class Agent:
         return "Agent %s - owns $%8.2f and %6i securities" % (id(self),
                 self.money, self.stocks)
 
-    def speak(self, world=None, market=None):
+    def speak(self, world, market):
         """
         Return order emitted by agent
         """
@@ -56,7 +54,7 @@ class Agent:
         order['agent'] = order.get('agent', self)
         return order
 
-    def act(self, world=None, market=None):
+    def act(self):
         """
         Emit an order on the market.
         Return order as dict, with following keys:
@@ -74,10 +72,9 @@ class Agent:
         """
         Record transaction
         """
-        if direction is SELL:
+        if direction:
             self.stocks -= quantity
-            self.money += quantity * price * (1 - 0.25 / 100)
+            self.money += quantity*price
         else:
             self.stocks += quantity
-            self.money -= quantity * price * (1 + 0.15 / 100)
-
+            self.money -= quantity*price

@@ -4,15 +4,15 @@ A minimal and over simplistic world class
 """
 
 import numpy as np
-from fms import worlds
+from fms.worlds import World
 
 
-class VNWorld(worlds.World):
+class VNWorld(World):
     """
     Minimal world class
     """
     def __init__(self, parameters=None):
-        worlds.World.__init__(self)
+        World.__init__(self)
         self.days = parameters['engines'][0]['daylength']
         self.forecast_information = np.random.normal(scale=0.03, size=self.days)
         # VN regulation
@@ -26,4 +26,4 @@ class VNWorld(worlds.World):
 
 
 if __name__ == '__main__':
-    print NullWorld()
+    print VNWorld()

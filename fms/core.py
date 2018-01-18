@@ -211,7 +211,7 @@ def _set_agents(params):
             agentclassname = '.'.join(('fms.agents', a['classname']))
         for i in range(a['number']):
             agentslist.append(getattr(agentmodule, a['classname'])(params, offset))
-        logger.info("Created  %d instances of agent %s" % 
+        logger.info("Created  %d instances of agent %s" %
             (a['number'], agentclassname))
     return agentslist
 
@@ -228,7 +228,7 @@ def _set_engines(params):
                     e['market']['classname'])
         else:
             marketmodule = _import_class('fms.markets', e['market']['classname'])
-        e['market']['instance'] = getattr(marketmodule, 
+        e['market']['instance'] = getattr(marketmodule,
                 e['market']['classname'])(params)
         if e['modulename']:
             enginemodule = _import_class(
@@ -249,7 +249,7 @@ def set_classes(params):
     engineslist = _set_engines(params)
     agentslist = _set_agents(params)
     return (world, engineslist, agentslist)
-            
+
 def do_check(args, opts):
     """
     Command: check experiment conffile, do not run

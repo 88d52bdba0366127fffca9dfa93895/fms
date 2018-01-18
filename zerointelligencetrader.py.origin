@@ -26,7 +26,7 @@ class ZeroIntelligenceTrader(agents.Agent):
     def __init__(self, params, offset=0):
         agents.Agent.__init__(self, params, offset)
         self.ref_price = self.args[0]
-        self.constrain = 0.1
+        self.constrain = 0.07
 
     def act(self, world=None, market=None):
         """
@@ -47,23 +47,12 @@ class ZeroIntelligenceTrader(agents.Agent):
             # money<=0, levering is discouraged
             direction = SELL
 
-        # return & price uniformly
-        # random_return = random.uniform(-self.constrain, self.constrain)
         # return & price normal distribution with vnindex distribution
-        # random_return = np.random.normal(loc=0.0005, scale=0.0154)
-        # return & price normal distribution with HOSE distribution
-        random_return = np.random.normal(loc=0.0003, scale=0.0269)
+        # 0.000620456917145, 0.0154018847092
+        random_return = np.random.normal(loc={mu}, scale={sigma})
         random_return = min(random_return, world.limit_change)
         random_return = max(random_return, -world.limit_change)
         price = self.ref_price * (1 + random_return)
-
-        # adjust the price as VN regulation
-        # if self.ref_price < 10000:
-        #     price = round(price, -1)
-        # elif self.ref_price <= 49950:
-        #     price = price - (price % 50)
-        # else:
-        #     price = round(price, -2)
 
         # sometime price is 0 b/c it's random_return
         if price != 0:
@@ -71,20 +60,11 @@ class ZeroIntelligenceTrader(agents.Agent):
         else:
             return {'direction': BUY, 'price': 0, 'quantity': 0}
         #
-        # # when we can only buy some stocks, let short
-        # if max_buy < 1:
-        #     direction = SELL
-
-        #
         if direction is SELL or max_buy <= 0:
             direction = SELL
             quantity = random.randint(1, self.stocks)
         else:
             quantity = random.randint(1, max_buy)
-        #
-        # volatilities = pd.rolling_std(market.exec_prices, window=5) * np.sqrt(5)
-        # if len(market.exec_prices) != 0 and not np.isnan(volatilities[-1]):
-        #     quantity = quantity * 10 * volatilities[-1]
 
         return {'direction': direction, 'price': price, 'quantity': quantity}
 
